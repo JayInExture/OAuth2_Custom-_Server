@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+spring:
+  output.ansi.enabled: ALWAYS
+  security:
+    oauth2:
+      client:
+        registration:
+          articles-client-oidc:
+            provider: spring
+            client-id: articles-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8081/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: articles-client-oidc
+          articles-client-authorization-code:
+            provider: spring
+            client-id: articles-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8081/login/oauth2/code/{registrationId}"
+            scope: articles.read,openid
+            client-name: articles-client-authorization-code
+            logout:
+              logout-success-url: /logout-success  # Redirect URL after logout
+              clear-authentication: true  # Clear authentication
+              invalidate-session: true  # Invalidate HttpSession
+              delete-cookies: "JSESSIONID"  # Add other cookies if necessary
+        provider:
+          spring:
+            issuer-uri: http://auth-server:8199
+
+
+
