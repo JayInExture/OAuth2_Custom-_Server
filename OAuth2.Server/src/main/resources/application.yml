@@ -1,0 +1,34 @@
+server:
+  port: 8199
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+spring:
+  output.ansi.enabled: ALWAYS
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://auth-server:8199
+        client:
+          articles-client:
+            require-authorization-consent: true
+            registration:
+              client-id: articles-client
+              client-secret: "{noop}secret"
+              client-name: Articles Client
+              client-authentication-methods:
+                - client_secret_basic
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+              redirect-uris:
+                - http://127.0.0.1:8081/login/oauth2/code/articles-client-oidc
+                - http://127.0.0.1:8081/login/oauth2/code/articles-client-authorization-code
+              scopes:
+                - openid
+                - articles.read
